@@ -11,30 +11,33 @@ import javax.persistence.Query;
 import com.org.dto.User;
 
 public class UserDao {
-	
+	EntityManagerFactory emf = Persistence.createEntityManagerFactory("subrat");
+    EntityManager em = emf.createEntityManager();
+    EntityTransaction et = em.getTransaction();
+    
 	public void saveAndUpdateUser(User user) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("subrat");
-	    EntityManager em = emf.createEntityManager();
-	    EntityTransaction et = em.getTransaction();
 	
-	    et.begin();
+		et.begin();
 	    em.merge(user);
 	    et.commit();
 	}
 	
 	public User fetchUserById(int id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("subrat");
-	    EntityManager em = emf.createEntityManager();
-	    User user = em.find(User.class, id);
+		    return em.find(User.class, id);
 	    
-	    user.getId();
-	    user.getName();
-	    user.getAge();
-	    user.getMobile();
-	    user.getEmail();
-	    user.getPassword();
-	    
-	    return user;
+	  }
+	public User fetchUserByEmailAndPassword(String email,String password) {
+		String query = "select s from User s where email=?1 and password=?2";
+		Query query1 = em.createQuery(query);
+		
+		query1.setParameter(1, email);
+		query1.setParameter(2, password);
+		 List<User> list = query1.getResultList();
+		 if(list.isEmpty()) {
+			 return null;
+		 }
+		return list.get(0); 
+		
 	}
 	
 	public List<User>fetchAllUsers(){
