@@ -46,7 +46,6 @@ public class UserDao {
 	    Query query = em.createQuery("select s from User s");
 	    List<User> list = query.getResultList();
 	    return list;
-	    
 	}
 	
 

@@ -22,6 +22,7 @@ public class Note {
 	
 	private String title;
 	
+	@Column(length = 500)
 	private String description;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
